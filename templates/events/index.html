@@ -12,6 +12,7 @@
       <th>Start</th>
       <th>End</th>
       <th>Site</th>
+      <th>Eventbrite</th>
       <th>Details</th>
     </tr>
   </thead>
@@ -26,6 +27,13 @@
        <td>
         {% if event.site %}
           {{ event.site }}
+        {% else %}
+          (none)
+        {% endif %}
+      </td>
+      <td>
+        {% if event.eventbrite %}
+          <a href={{ event.eventbrite }} target='_blank'>{{ event.eventbrite }}</a>
         {% else %}
           (none)
         {% endif %}
