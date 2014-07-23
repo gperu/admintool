@@ -10,5 +10,5 @@ class EventForm(Form):
                           format=DATE_FORMAT)
     enddate = DateField('End', format=DATE_FORMAT)
     site = TextField('site')
-    eventbrite = TextField('eventbrite', format=TEXT_FORMAT)
+    eventbrite = TextField('eventbrite')
     details_url = TextField('Details URL', validators=[URL()])
