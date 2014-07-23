@@ -11,6 +11,7 @@
       <th>Event Identifier</th>
       <th>Start</th>
       <th>End</th>
+      <th>Site</th>
       <th>Details</th>
     </tr>
   </thead>
@@ -22,6 +23,13 @@
       </td>
       <td>{{ event.startdate }}</td>
       <td>{{ event.enddate }}</td>
+       <td>
+        {% if event.site %}
+          {{ event.site }}
+        {% else %}
+          (none)
+        {% endif %}
+      </td>
       <td>
         {% if event.details_url %}
           <a href={{ event.details_url }} target='_blank'>{{ event.details_url }}</a>
