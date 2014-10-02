@@ -8,5 +8,5 @@ class EventForm(Form):
     id = TextField('Identifier', validators=[DataRequired()])
     startdate = DateField('Start', validators=[DataRequired()],
                           format=DATE_FORMAT)
-    enddate = DateField('End', format=DATE_FORMAT)
+    enddate = DateField('End', validators=[DataRequired()], format=DATE_FORMAT)
     details_url = TextField('Details URL', validators=[URL()])

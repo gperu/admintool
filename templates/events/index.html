@@ -8,6 +8,15 @@
 
 {% block content %}
   <h1>Event Manager</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert {{category}}" role="alert">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
   <form method="get" role="form" autocomplete="off">
     <div>Filter by:
       <label for="site">Site</label>
@@ -15,6 +24,7 @@
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
+
   <table class='table table-striped'>
   <thead>
     <tr>
@@ -28,13 +38,13 @@
   {% for event in events %}
     <tr>
       <td>
-        <a href={{ url_for('edit_event', id=event.id) }}>{{ event.id }}</a>
+        <a href="{{ url_for('edit_event', id=event.id) }}">{{ event.id }}</a>
       </td>
       <td>{{ event.startdate }}</td>
       <td>{{ event.enddate }}</td>
       <td>
         {% if event.details_url %}
-          <a href={{ event.details_url }} target='_blank'>{{ event.details_url }}</a>
+          <a href="{{ event.details_url }}" target="_blank">{{ event.details_url }}</a>
         {% else %}
           (none)
         {% endif %}
@@ -43,6 +53,10 @@
   {% endfor %}
   </tbody>
   </table>
+  <a href="{{ url_for('new_event') }}" class="btn btn-default">
+    <span class="glyphicon glyphicon-plus"></span>
+    Create a new event
+  </a>
 {% endblock %}
 
 {% block scripts %}

@@ -1,6 +1,8 @@
 import os
 import json
-from flask import Flask, render_template, request, abort, Response, redirect
+from flask import Flask, render_template, request, abort, Response, redirect,\
+                  flash
+
 
 import db
 import cities
@@ -116,10 +118,35 @@ def events():
         events = [e for e in events if e.site.fullname == site]
     return render_template('events/index.html', events=events)
 
+@app.route('/events/new')
+def new_event():
+    event = Event()
+    form = EventForm(obj=event)
+    form.new_record = True
+    return render_template('events/new.html', form=form)
+
+@app.route('/events', methods=['POST'])
+def create_event():
+    db_session = db.get_session()
+
+    event = Event()
+    form = EventForm()
+    form.new_record = True
+
+    form.populate_obj(event)
+
+    if form.validate_on_submit():
+        db_session.add(event)
+        db_session.commit()
+        flash('The event has been created successfully.','alert-success')
+        return redirect('events')
+    else:
+        return render_template('events/new.html', form=form)
+
 @app.route('/events/<id>/edit')
 def edit_event(id):
-    form = EventForm()
     event = db.get_session().query(Event).get(id)
+    form = EventForm(obj=event)
     return render_template('events/edit.html', event=event, form=form)
 
 @app.route('/events/<id>', methods=['POST'])

@@ -1,0 +1,35 @@
+{% macro with_errors(field) %}
+    <div class='form-group {{ 'has-error' if field.errors }}'>
+      {{ field.label(class='control-label') }}
+      {% set css_class = 'form-control' + kwargs.pop('class', '') %}
+      {{ field(class=css_class, **kwargs) }}
+      {% if field.errors %}
+          <ul class="errors">{% for error in field.errors %}<li>{{ error|e }}</li>{% endfor %}</ul>
+      {% endif %}
+    </div>
+{% endmacro %}
+
+{% if form.errors %}
+  <div class="alert alert-danger" role="alert">
+    <h4>Whoops!</h4>
+    We found some errors in your input. Please check below.
+  </div>
+{% endif %}
+
+{% if form.new_record %}
+<form method="POST" action="{{ url_for('create_event') }}">
+{% else %}
+<form method="POST" action="{{ url_for('update_event', id=event.id) }}">
+{% endif %}
+
+  {{ form.csrf_token }}
+
+  {{ with_errors(form.id) if form.new_record }}
+  {{ with_errors(form.startdate) }}
+  {{ with_errors(form.enddate) }}
+  {{ with_errors(form.details_url) }}
+
+  <div class='actions'>
+    <input class="btn btn-primary" name="commit" type="submit" value="Save" />
+  </div>
+</form>
